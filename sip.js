@@ -1358,6 +1358,10 @@ exports.create = function(options, callback) {
   }
 
   function decodeFlowToken(token) {
+    // don't blow up if the token is undefined!!
+    if (!!!token)
+      return undefined;
+
     var s = (new Buffer(token, 'base64')).toString('ascii').split(',');
     if(s.length != 6) return;
 
@@ -1393,7 +1397,12 @@ exports.create = function(options, callback) {
         (function(callback) {
           if(hop.host === hostname) {
             var flow = decodeFlowToken(hop.user);
-            callback(flow ? [flow] : []);
+            if (!!!flow) {
+              hop = parseUri(m.uri);
+              resolve(hop, callback);
+            } else {
+              callback(flow ? [flow] : []);
+            }
           }
           else
             resolve(hop, callback);
