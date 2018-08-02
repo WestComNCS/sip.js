@@ -21,7 +21,6 @@
     "node": ">=0.2.2"
   },
   "dependencies": {
-    "ws": "*"
   },
   "devDependencies": {
     "coffee-script": "~1.6.2"
